@@ -1,0 +1,57 @@
+
+
+/* Dekstop Version */
+@media (min-width: 992px) {
+    .navbar-brand, .nav-link{
+        color: white !important;
+        text-transform: uppercase;
+        margin-right: 30px;
+    }
+}
+.navbar.scrolling-active{
+    background-color: rgb(93, 180, 255);
+}
+.tombol{
+    text-transform: uppercase;
+    border-radius: 20px;
+}
+.hero{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8) , rgba(0, 0, 0, 0.5)),url(../img/luca-bravo-8x_fFNrmeDk-unsplash.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+}
+.info-panel {
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+    margin-top: -350px;
+    border-radius: 12px;
+    background-color: white;
+    padding: 30px;
+    margin: 50px;
+}
+.workspace{
+    margin: 50px;
+}
+.about{
+    margin: 50px;
+}
+.card{
+    margin: 10px;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+
+}
+/* Login */
+.wrapper{
+    background: #ececec;
+    padding: 0 20px 0 20px;
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.image{
+    width: 5px;
+}
