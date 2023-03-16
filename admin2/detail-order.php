@@ -48,19 +48,19 @@ $sql = "SELECT * FROM `order`  where id_order = '$id_order'";
 
 
     if ($op == 'delete') {
-         $id_detail_order = $_GET['id_detail_order'];
-        if (isset($_GET["id_order"])) {
-            $sql = "DELETE FROM detail_order WHERE id_order='$id_order'";
-            $query = mysqli_query($koneksi, $sql);
-            if ($query) {
-                $sukses = "Data berhasil dihapus";
-            } else {
-                $error = "Data gagal dihapus";
-            }
-        } else {
-            $error = "id detail order tidak ditemukan";
-        }
-    }
+    $id_detail_order = $_GET['id_detail_order'];
+   if (isset($_GET["id_order"])) {
+       $sql = "DELETE FROM detail_order WHERE id_order='$id_order' AND id_detail_order='$id_detail_order'";
+       $query = mysqli_query($koneksi, $sql);
+       if ($query) {
+           $sukses = "Data berhasil dihapus";
+       } else {
+           $error = "Data gagal dihapus";
+       }
+   } else {
+       $error = "id detail order tidak ditemukan";
+   }
+}
 
     // Menghapus Data
 //     if ($op == 'delete') {
@@ -224,18 +224,23 @@ $sql = "SELECT * FROM `order`  where id_order = '$id_order'";
                                                 <td><?= $data['status_detail_order'] ?></td> 
                                                 </td> 
                                                 <td width="20%"> 
-                                                    <a onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini')" href="detail-order.php?id_detail_order=<?= $data['id_order'] ?>" class="btn btn-danger btn-sm-10">Hapus</a> 
+                                                    <a onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini')" href="detail-order.php?id_order=<?= $id_order['id_order'] ?>&id_detail_order=<?= $data['id_order'] ?>" class="btn btn-danger btn-sm-10">Hapus</a>
                                                 </td> 
+                                                <?php 
+                                                echo var_dump($id_order);   
+                                                ?>
                                             </tr> 
                                             <?php } ?>
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- /.container-fluid -->
             </div>
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
-
-</div>
+            <!-- /.content -->
+            
+        </div>
+        <!-- <a onclick="return confirm('Apakkh Anda Yakin Ingin Menghapus Data Ini')" href="detail-order.php?id_detail_order=" class="btn btn-danger btn-sm-10">Hapus</a>  -->
+         <!-- //$data['id_order']  -->
