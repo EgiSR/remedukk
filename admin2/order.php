@@ -30,7 +30,6 @@
 
     <?php
     include('../layouts/admin/navbar-admin.php');
-    include('../layouts/admin/sidebar-dashboard-admin.php');
     include('../koneksi.php');
  
 if (isset($_GET["op"])) {
@@ -124,148 +123,138 @@ if (isset($_POST["add_menu"])) {
 
     <!-- Main content -->
     <div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        Tambah Data User
+                    </div>
+                    <div class="card-body">
+                        <?php if(isset($error)) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $error; ?>
+                            </div>
+                        <?php } ?>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            Tambah Data User
-                        </div>
-                        <div class="card-body">
-                            <?php
-                            if (@$error) { ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <?php echo @$error ?>
-                                </div>
-                                <?php
-                                //header("refresh:2;url=user.php");
-                                ?>
-                            <?php } ?>
-                            <?php
-                            if (@$sukses) { ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?php echo @$sukses ?>
-                                </div>
-                                <?php
-                                //header("refresh:1;url=admin/user.php");
-                                ?>
-                            <?php } ?>
+                        <?php if(isset($sukses)) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $sukses; ?>
+                            </div>
+                        <?php } ?>
 
-                            <form action="" method="POST" value="Reset">
-                                <div class="row mb-3">
-                                    <label for="no_meja" class="col-sm-2 col-form-label">no meja</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="no_meja" name="no_meja" autocomplete="off" value="<?= @$no_meja ?>">
-                                    </div>
+                        <form action="" method="POST">
+                            <div class="mb-3 row">
+                                <label for="no_meja" class="col-sm-2 col-form-label">No. Meja</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="no_meja" name="no_meja" autocomplete="off" value="<?php echo @$no_meja; ?>">
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="tanggal" class="col-sm-2 col-form-label">tanggal</label>
-                                    <div class="col-sm-10">
-                                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?= @$tanggal ?>">
-                                    </div>
+                            <div class="mb-3 row">
+                                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?php echo @$tanggal; ?>">
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="id_user" class="col-sm-2 col-form-label">id user</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" autocomplete="off"  id="id_user" name="id_user" value="<?= @$id_user ?>">
-                                    </div>
+                            <div class="mb-3 row">
+                                <label for="id_user" class="col-sm-2 col-form-label">Nama User</label>
+                                <div class="col-sm-10">
+                                    <select name="id_user" id="id_user" class="form-control"> 
+                                        <option value="">- Pilih Pelanggan -</option> 
+                                        <?php 
+                                        $sql = "SELECT * FROM user"; 
+                                        $query = mysqli_query($koneksi, $sql); 
+                                        while ($data = mysqli_fetch_array($query)) { 
+                                            echo '<option value="'.$data['id_user'].'" '.(@$id_user==$data['id_user'] ? 'selected' : '').'>'.$data['username'].'</option>'; 
+                                        } 
+                                        ?> 
+                                    </select>
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="keterangan" class="col-sm-2 col-form-label">keterangan</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="keterangan" name="keterangan" value="<?= @$keterangan ?>">
-                                    </div>
+                            <div class="mb-3 row">
+                                <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="keterangan" name="keterangan" value="<?php echo @$keterangan; ?>">
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="id_level" class="col-sm-2 col-form-label">status order</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="status_order" name="status_order" value="<?= @$status_order ?>">
-                                    </div>
+                            <div class="mb-3 row">
+                                <label for="status_order" class="col-sm-2 col-form-label">Status Order</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="status_order" name="status_order" value="<?php echo @$status_order; ?>">
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="id_makanan" class="col-sm-2 col-form-label">id makanan</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="id_makanan" name="id_makanan" value="<?= @$id_makanan ?>">
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <input type="submit" value="Simpan Data" name="add_menu" class="btn btn-primary">
-                                    <input type="reset" value="Reset" class="btn btn-success">
-                                </div>
-                            </form>
+                            <div class="col-12">
+                                <input type="submit" value="Simpan Data" name="add_menu" class="btn btn-primary">
+                                <input type="reset" value="Reset" class="btn btn-success">
+                            </div>
+                         </form>
                         </div>
                     </div>
                 </div>
-                <!-- /.col-md-6 -->
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Data Menu</h3>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped table-paginate" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <td>No</td>
-                                        <td>no meja</td>
-                                        <td>tanggal</td>
-                                        <td>id user</td>
-                                        <td>keterangan</td>
-                                        <td>status order</td>
-                                        <td>Edit & Hapus</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $sql = "SELECT * FROM  `order` ORDER BY id_order ASC";
-                                    $query = mysqli_query($koneksi, $sql);
-                                    $no = 1;
-                                 while ($data_order = mysqli_fetch_array($query)) {
-                                        $id_order = $data_order['id_order'];
-                                        $no_meja = $data_order['no_meja'];
-                                        $tanggal = $data_order['tanggal'];
-                                        $id_user = $data_order['id_user'];
-                                        $keterangan = $data_order['keterangan'];
-                                        $status_order = $data_order['status_order'];
-
-                                    ?>
-                                        <tr>
-                                            <td><?= $no++ ?></td>
-                                            <td><?= @$no_meja; ?></td>
-                                            <td><?= @$tanggal; ?></td>
-                                            <td><?= @$id_user; ?></td>
-                                            <td><?= @$keterangan; ?></td>
-                                            <td><?= @$status_order; ?></td>
-                                            <td>
-                                                <a href="user.php?op=edit&id_user=<?= $data_user['id_user'] ?>" class="btn btn-warning ">Edit</a>
-                                                <a href="user.php?op=delete&id_user=<?= $data_user['id_user'] ?>" onclick="return confirm('Yakin ingin menghapus data ini?')" class="btn btn-danger ">Hapus</a>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-md-6 -->
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
-    <!-- /.content -->
 
-</div>
-?>
+                <!-- /.col-md-6 -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Data Menu</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-paginate" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No Meja</th>
+                                <th>Tanggal</th>
+                                <th>Nama User</th>
+                                <th>Keterangan</th>
+                                <th>Status Order</th>
+                                <th>Detail & Hapus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $sql = "SELECT * from `order` , user where `order`.id_user=user.id_user order by id_order desc";
+                                $query = mysqli_query($koneksi, $sql);
+                                $no = 1;
+                                while ($data_order = mysqli_fetch_array($query)) {
+                                    $id_order = $data_order['id_order'];
+                                    $no_meja = $data_order['no_meja'];
+                                    $tanggal = $data_order['tanggal'];
+                                    $username = $data_order['username'];
+                                    $keterangan = $data_order['keterangan'];
+                                    $status_order = $data_order['status_order'];
+                            ?>
+                                    <tr>
+                                        <td><?= $no++ ?></td>
+                                        <td><?= @$no_meja; ?></td>
+                                        <td><?= @$tanggal; ?></td>
+                                        <td><?= @$username; ?></td>
+                                        <td><?= @$keterangan; ?></td>
+                                        <td><?= @$status_order; ?></td>
+                                        <td>
+                                            <a href="detail-order.php?id_order=<?= $data_order['id_order'] ?>" class="btn btn-warning">Detail Order</a>
+                                            <a href="order.php?op=delete&id_order=<?= $data_order['id_order'] ?>" onclick="return confirm('Yakin ingin menghapus data ini?')" class="btn btn-danger">Hapus</a>
+                                        </td>
+                                    </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  

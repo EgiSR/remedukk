@@ -1,3 +1,10 @@
+<?php
+$id_order = $_GET['id_order'];
+include('../koneksi.php');
+$sql = "SELECT * FROM `order`  where id_order = '$id_order'";
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +37,6 @@
 
     <?php
     include('../layouts/admin/navbar-admin.php');
-    include('../layouts/admin/sidebar-dashboard-admin.php');
     include('../koneksi.php');
 
     // Mengambil parameter op sama seperti GET url
@@ -40,61 +46,47 @@
     $op = "";
     }
 
-    // Menghapus Data
+
     if ($op == 'delete') {
-    $id_masakan = $_GET['id_masakan'];
-    $sql = "DELETE FROM masakan WHERE id_masakan='$id_masakan'";
-    $query = mysqli_query($koneksi, $sql);
-    if ($query) {
-        $sukses = "Data berhasil dihapus";
-    } else {
-        $error = "Data gagal dihapus";
+         $id_detail_order = $_GET['id_detail_order'];
+        if (isset($_GET["id_order"])) {
+            $sql = "DELETE FROM detail_order WHERE id_order='$id_order'";
+            $query = mysqli_query($koneksi, $sql);
+            if ($query) {
+                $sukses = "Data berhasil dihapus";
+            } else {
+                $error = "Data gagal dihapus";
+            }
+        } else {
+            $error = "id detail order tidak ditemukan";
+        }
     }
- }
 
-    // Edit Data
-    if ($op == 'edit') {
-    @$id_masakan = $_GET['id_masakan'];
-    $sql = "SELECT * FROM masakan WHERE id_masakan ='$id_masakan'";
-    $query = mysqli_query($koneksi, $sql);
-    $data = mysqli_fetch_array($query);
-    @$nama_masakan = $data['nama_masakan'];
-    @$harga = $data['harga'];
-    @$status_masakan = $data['status_masakan'];
+    // Menghapus Data
+//     if ($op == 'delete') {
+//     $id_detail_order = $_GET['id_detail_order'];
+//     $sql = "delete from detail_order where id_detail_order = '$id_detail_order'";
+//     $query = mysqli_query($koneksi, $sql);
 
-    if ($id_masakan == '') {
-        $error = "Data tidak ditemukan";
-    }
- }
+//     if($query) {
+//         $sukses = "Data berhasil dihapus";
+//     } else {
+//         $error = "Data gagal dihapus";
+//     }
+//  }
 
     // Tambah Data
     if (isset($_POST['add_menu'])) {
-    @$nama_masakan = $_POST['nama_masakan'];
-    @$harga = $_POST['harga'];
-    @$foto = $_POST['foto'];
-    @$status_masakan = $_POST['status_masakan'];
-
-    if ($nama_masakan && $harga && $status_masakan) {
-        if ($op == 'edit') {
-            $sql = "UPDATE masakan SET nama_masakan='$nama_masakan', harga='$harga', foto='$foto' , status_masakan='$status_masakan' WHERE id_masakan='$id_masakan'";
-            $query = mysqli_query($koneksi, $sql);
-            if ($query) {
-                $sukses = "Data berhasil disimpan";
-            } else {
-                $error = "Data gagal disimpan";
-            }
-            } else {
-            $sql = "INSERT INTO masakan(nama_masakan, harga, foto , status_masakan) VALUES('$nama_masakan', '$harga', '$foto' , '$status_masakan')";
-            $query = mysqli_query($koneksi, $sql);
-            if ($query) {
-                $sukses = "Data berhasil disimpan";
-            } else {
-                $error = "Data gagal disimpan";
-            }
-            }
-    }   else {
-        $error = "Silahkan masukan data";
-        }
+    $id_masakan =$_POST['id_masakan']; 
+    $keterangan = $_POST['keterangan']; 
+    $status_detail_order = $_POST['status_detail_order']; 
+ 
+    $sql = "INSERT into detail_order (id_order, id_masakan, keterangan, status_detail_order ) values('$id_order', '$id_masakan', '$keterangan', '$status_detail_order')"; 
+    $query = mysqli_query($koneksi, $sql); 
+ 
+    if($query) {    
+    } else { 
+    }
 }
 ?>
 
@@ -120,7 +112,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            Tambah Data Menu
+                            Tambah Data Orderan
                         </div>
                         <div class="card-body">
                             <?php
@@ -142,38 +134,49 @@
                                 ?>
                             <?php } ?>
 
+
+
+
                             <form action="" method="POST" value="Reset Makanans">
                                 <div class="row mb-3">
                                     <label for="nama_makanan" class="col-sm-2 col-form-label">Nama Makanan</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="nama_masakan" name="nama_masakan" autocomplete="off" value="<?= @$nama_masakan ?>">
+                                        <select name="id_masakan" id="id_masakan" onchange="harga()" class="form-control" required> 
+                                            <option value="">- PIlih Menu -</option> 
+                                            <?php 
+                                            $sql = "SELECT * FROM masakan ORDER BY nama_masakan"; 
+                                            $query = mysqli_query($koneksi, $sql); 
+                                            $no = 1; 
+                                            while ($data_masakan = mysqli_fetch_array($query)) { ?> 
+                                                <option value="<?= $data_masakan['id_masakan']; ?>"> <?= $data_masakan['nama_masakan']; ?> - Rp. <?= number_format($data_masakan['harga']); ?> </option> 
+                                            <?php 
+                                            } 
+                                            ?> 
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="harga" class="col-sm-2 col-form-label">Harga</label>
+                                    <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="harga" name="harga" value="<?= @$harga ?>">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="harga" class="col-sm-2 col-form-label">Gambar</label>
-                                    <div class="col-sm-10">
-                                        <input type="file" class="form-control img-thumbnail" name="foto" accept="img/*" required>
+                                        <input type="text" class="form-control img-thumbnail" name="keterangan" required>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <label for="status" class="col-sm-2 col-form-label">Status</label>
                                     <div class="col-sm-10">
-                                        <select id="status_masakan" name="status_masakan" class="form-control">
+                                        <select id="status_detail_order" name="status_detail_order" class="form-control">
                                             <option value="">- Pilih Status -</option>
-                                            <option value="tersedia" <?php if (@$status_masakan == "tersedia") echo "selected" ?>>Tersedia</option>
-                                            <option value="habis" <?php if (@$status_masakan == "habis") echo "selected" ?>>Habis</option>
+                                            <option value="lunas" <?php if (@$status_detail_order == "lunas") echo "selected" ?>>lunas</option>
+                                            <option value="belum lunas" <?php if (@$status_detail_order == "belum lunas") echo "selected" ?>>belum lunas</option>
                                         </select>
                                     </div>
                                 </div>
+
+
+
+
 
                                 <div class="col-12">
                                     <input type="submit" value="Simpan Data" name="add_menu" class="btn btn-primary">
@@ -200,48 +203,39 @@
                                 <thead>
                                     <tr>
                                         <td>No</td>
-                                        <td>Nama</td>
+                                        <td>Masakan</td>
                                         <td>Harga</td>
-                                        <td>Gambar</td>
+                                        <td>keterangan</td>
                                         <td>Status</td>
-                                        <td>Edit & Hapus</td>
+                                        <td>Hapus</td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    $sql = "SELECT * FROM masakan ORDER BY id_masakan ASC";
-                                    $query = mysqli_query($koneksi, $sql);
-                                    $no = 1;
-                                    while ($data_masakan = mysqli_fetch_array($query)) {
-                                        $id_masakan = $data_masakan['id_masakan'];
-                                        $nama_masakan = $data_masakan['nama_masakan'];
-                                        $harga = $data_masakan['harga'];
-
-                                        $status_masakan = $data_masakan['status_masakan'];
-                                    ?>
-                                        <tr>
-                                            <td><?= $no++ ?></td>
-                                            <td><?= @$nama_masakan; ?></td>
-                                            <td>Rp. <?= number_format(@$harga); ?></td>
-                                            <?php echo "<td><img src='img/".$data_masakan['foto']."' width='200' height='200'></td>";?>
-                                            <td><?= @$status_masakan; ?></td>
-                                            <td>
-                                                <a href="menu.php?op=edit&id_masakan=<?= $data_masakan['id_masakan'] ?>" class="btn btn-warning ">Edit</a>
-                                                <a href="menu.php?op=delete&id_masakan=<?= $data_masakan['id_masakan'] ?>" onclick="return confirm('Yakin ingin menghapus data ini?')" class="btn btn-danger ">Hapus</a>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
+                                    <?php 
+                                        $no = 1; 
+                                        $sql = "select * from detail_order, masakan where detail_order.id_masakan=masakan.id_masakan and id_order='$id_order' order by id_detail_order desc"; 
+                                        $query = mysqli_query($koneksi, $sql); 
+                                        foreach ($query as $data) {  ?> 
+                                            <tr> 
+                                                <td><?= $no++; ?></td> 
+                                                <td><?= $data['nama_masakan'] ?></td> 
+                                                <td>Rp. <?= number_format($data['harga'], 2, ',', ',') ?></td> 
+                                                <td><?= $data['keterangan'] ?></td> 
+                                                <td><?= $data['status_detail_order'] ?></td> 
+                                                </td> 
+                                                <td width="20%"> 
+                                                    <a onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini')" href="detail-order.php?id_detail_order=<?= $data['id_order'] ?>" class="btn btn-danger btn-sm-10">Hapus</a> 
+                                                </td> 
+                                            </tr> 
+                                            <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <!-- /.col-md-6 -->
             </div>
-            <!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
 
 </div>
-     ?>

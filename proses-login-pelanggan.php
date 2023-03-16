@@ -2,17 +2,17 @@
 
 include 'koneksi.php';
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username_pelanggan = $_POST['username_pelanggan'];
+$password_pelanggan = $_POST['password_pelanggan'];
 
-$sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+$sql = "SELECT * FROM pelanggan WHERE username_pelanggan='$username_pelanggan' AND password_pelanggan='$password_pelanggan'";
 $query = mysqli_query($koneksi, $sql);
 
 if(mysqli_num_rows($query)>0){
       $data = mysqli_fetch_array($query);
       session_start();
-      $_SESSION['id_user'] = $data['id_user'];
-      $_SESSION['nama_user'] = $data['nama_user'];
+      $_SESSION['nama_pelanggan'] = $data['nama_pelanggan'];
+      $_SESSION['username_pelanggan'] = $data['username_pelanggan'];
       $_SESSION['id_level'] = $data['id_level'];
       if($data['id_level']=='3') {
             header('location:pelanggan/pelanggan.php');

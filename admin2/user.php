@@ -191,7 +191,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Menu</h3>
+                            <h3 class="card-title">Data User</h3>
                         </div>
                         <div class="card-body">
                             <table class="table table-striped table-paginate" cellspacing="0" width="100%">

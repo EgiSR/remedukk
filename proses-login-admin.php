@@ -15,7 +15,7 @@ if(mysqli_num_rows($query)>0){
       $_SESSION['nama_user'] = $data['nama_user'];
       $_SESSION['id_level'] = $data['id_level'];
       if($data['id_level']=='1') {
-            header('location:admin2/menu.php');
+            header('location:admin2/admin2.php');
       }elseif($data['id_level']=='2') {
             header('location:kasir/kasir.php');
       }
